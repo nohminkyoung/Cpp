@@ -1,7 +1,3 @@
-//version 01의 struct를 class로 정의하기 
-// name을 동적할당의 형태로 받아 char변수에 저장하기 
-
-
 #include<iostream>
 #include<cstring>
 
@@ -18,6 +14,11 @@ class Account{
         Account(char * name, int acc, int bal) : Acc(acc), Bal(bal){
             Name = new char[strlen(name)+1];
             strcpy(Name, name);
+        }
+
+        Account(const Account &copy) : Acc(copy.Acc), Bal(copy.Bal){
+            Name = new char[strlen(copy.Name)+1];
+            strcpy(Name, copy.Name);
         }
 
         int GetAcc(){  // 계좌 호출
@@ -58,7 +59,7 @@ void ShowAllAccount(void);
 
 
 
-Account * AccArr[100]; //고객정보를 담을 구조채배열
+Account * AccArr[100]; //고객정보를 담을 포이너 배열
 int accID = 0; // 고객 아이디 번호 -> 배열의 인덱스 번호로 사용됨
 
 
@@ -67,7 +68,7 @@ int main(void){
 
     while (1)
     {
-            ShowMenu();
+        ShowMenu();
         cout<<"메뉴를 선택하세요"<<endl;
         cin>>select;
 
@@ -118,7 +119,7 @@ void MakeAccount(void){ // 계좌 개설 함수
     cout<<"잔액 :"<<endl;
     cin>>bal;
 
-    AccArr[accID] = new Account(name, acc, bal);
+    AccArr[accID] = new Account(name, acc, bal); // 포인터 배열이라 동적 할당으로 주소값을 저장
     accID++;
 }
 
@@ -178,3 +179,14 @@ void ShowAllAccount(void){ // 전체 계좌 조회
         cout<<"======================"<<endl;
     }
 }
+
+
+
+
+//####  version2  ####
+//version 01의 struct를 class로 정의하기 
+// name을 동적할당의 형태로 받아 char변수에 저장하기 
+// 객체 포인터 배열을 선언
+
+//####  version3  ####
+// Account 클래스의 복생성자 추가
