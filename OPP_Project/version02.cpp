@@ -21,7 +21,7 @@ class Account{
             strcpy(Name, copy.Name);
         }
 
-        int GetAcc(){  // 계좌 호출
+        int GetAcc() const{  // 계좌 호출 + const
             return Acc;
         }
 
@@ -39,7 +39,7 @@ class Account{
             return money;
         }
 
-        void ShowAcc(){
+        void ShowAcc()const{ // const추가 
             cout<<"이름: "<<Name<<endl;
             cout<<"계좌: "<<Acc<<endl;
             cout<<"잔액: "<<Bal<<endl;
@@ -190,3 +190,6 @@ void ShowAllAccount(void){ // 전체 계좌 조회
 
 //####  version3  ####
 // Account 클래스의 복생성자 추가
+
+//####  version4  ####
+// const로 선언 가능한 멤버 함수를 모두 const로 선언
