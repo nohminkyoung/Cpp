@@ -3,6 +3,7 @@
 
 using namespace std;
 
+enum{Level_A=7,Level_B=4,Level_C=2};
 
 class Account{
     private : 
@@ -25,7 +26,7 @@ class Account{
             return Acc;
         }
 
-        void Deposit (int money){ // 입금
+        virtual void Deposit (int money){ // 입금 //여기에도 virtual을 빼먹지않아야 유도클래스들의 Deposit함수를 불러올수있음 (AccountHandler에서 Account의 포인터함수배열로 받기때문)
             Bal += money;
         }
 
@@ -50,6 +51,35 @@ class Account{
         }
 };
 
+
+//보통예금계좌 
+class NomalAccount : public Account{
+    private :
+        int interRate; //이자
+    
+    public :
+        NomalAccount(char * name, int acc, int bal, int rate):Account(name, acc, bal), interRate(rate){}
+
+        virtual void Deposit(int money){ //virtual로 선언 -> 얘로 생성된 클래스는 어떤 포인터에 담겨도 이 함수가 호출
+            Account::Deposit(money); // 입금
+            Account::Deposit(money*(interRate/100.0)); // 입금시 이자 
+        }
+
+};
+
+class HighCreditAccount : public NomalAccount{
+    private :   
+        int special;
+    public:
+        HighCreditAccount(char * name, int acc, int bal, int rate, int spe) : NomalAccount(name, acc, bal, rate), special(spe){}
+
+        virtual void Deposit(int money){ //virtual로 선언 -> 얘로 생성된 클래스는 어떤 포인터에 담겨도 이 함수가 호출
+            NomalAccount::Deposit(money); // 입금 및 입금한 돈의 이자를 추가함
+            Account::Deposit(money*(special/100.0)); // 등급에 따른 특별이자 추가
+        }
+};
+
+
 // 기존의 전역함수들을 모두 맴버함수로 갖는 class선언
 class AccountHandler{
     private :
@@ -68,10 +98,31 @@ class AccountHandler{
             cout<<"5. 종료하기"<<endl;
         }
 
-        void MakeAccount(void){ // 계좌 개설 함수
+
+        void MakeAccount(void){ // 어떤 조건의 계좌를 개설할 것인지 보여주는 함수
+            int select;
+            cout<<"----계좌의 종류 선택----"<<endl;
+            cout<<"1. 보통예금계좌"<<endl;
+            cout<<"2. 신용신뢰계좌"<<endl;
+            cout<<"선택 : "<<endl;
+            cin>>select;
+
+            if(select==1){
+                MakeNomal();
+            }else if (select==2)
+            {
+                MakeCradit();
+            }else{
+                cout<<"올바른 값을 입력"<<endl;
+            }
+
+        }
+
+        void MakeNomal(void){ // 보통예금계좌 개설
             char name[20];
             int acc;
             int bal;
+            int rate;
 
             cout<<"[계좌개설]"<<endl;
             cout<<"이름 :"<<endl;
@@ -80,9 +131,47 @@ class AccountHandler{
             cin>>acc;
             cout<<"잔액 :"<<endl;
             cin>>bal;
+            cout<<"이자율 :"<<endl;
+            cin>>rate; 
 
-            AccArr[accID] = new Account(name, acc, bal); // 포인터 배열이라 동적 할당으로 주소값을 저장
+            AccArr[accID] = new NomalAccount(name, acc, bal, rate); // 포인터 배열이라 동적 할당으로 주소값을 저장
             accID++;
+        }
+
+        void MakeCradit(void){ // 계좌 개설 함수
+            char name[20];
+            int acc;
+            int bal;
+            int rate;
+            int level;
+
+            cout<<"[계좌개설]"<<endl;
+            cout<<"이름 :"<<endl;
+            cin>>name;
+            cout<<"계좌 :"<<endl;
+            cin>>acc;
+            cout<<"잔액 :"<<endl;
+            cin>>bal;
+            cout<<"이자율 :"<<endl;
+            cin>>rate; 
+            cout<<"신용등급(1toA, 2toB, 3toC) :"<<endl;
+            cin>>level; 
+
+            if(level==1){
+                AccArr[accID] = new HighCreditAccount(name, acc, bal, rate, Level_A); // 포인터 배열이라 동적 할당으로 주소값을 저장
+                accID++;
+            }else if(level==2){
+                AccArr[accID] = new HighCreditAccount(name, acc, bal, rate, Level_B); // 포인터 배열이라 동적 할당으로 주소값을 저장
+                accID++;
+            }else if(level==3){
+                AccArr[accID] = new HighCreditAccount(name, acc, bal, rate, Level_C); // 포인터 배열이라 동적 할당으로 주소값을 저장
+                accID++;
+            }else{
+                cout<<"올바른 값을 입력"<<endl;
+            }
+
+            
+
         }
 
 
@@ -200,3 +289,10 @@ int main(void){
 //####  version5  ####
 // AccountHandler라는 이름의 컨트롤 클래스 정의 + Account 객체의 저장을 위해 선언한 배열과 변수도 포함
 // AccountHandler를 기반으로 프로그램이 실행되도록 main수정
+
+
+//####  version6  ####
+// 게좌를 보통예금계좌와 신용신뢰계좌로 나누기
+// 보통예금계좌 : 이율정보 등록 -> 입금 할 때 입금하는 돈의 이자가 추가로 입금
+// 신용신뢰계좌 : 보통예금계좌의 기본이율 + 신용정보 ABC에 따른 추가이율 7, 4, 2
+// 이자는 초기 금액에는 발생 x
