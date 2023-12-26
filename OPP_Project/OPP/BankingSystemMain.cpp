@@ -38,3 +38,6 @@ int main(void){
 //#### version8  ####
 //Account 클래스에 대입연산자 정의
 //AccountHandler 클래스의 멤버변수인 배열이 객체를 저장했는데, 이를 BoundCheckPointPtrArray로 대체 
+
+//####  version9  ####
+//직접 구현한  String 클래스를 사용

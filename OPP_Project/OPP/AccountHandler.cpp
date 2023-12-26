@@ -5,6 +5,7 @@
 #include "AccountHandler.h"
 #include "NormalAccount.h"
 #include "CreditAccount.h"
+#include "StringClass.h"
 
 AccountHandler::AccountHandler():accID(0){}; //AccountHandler가 생성될 때 고객 인덱스를 0으로 초기화
 
@@ -38,7 +39,7 @@ void AccountHandler::MakeAccount(void){ // 어떤 조건의 계좌를 개설할 
 }
 
 void AccountHandler::MakeNormal(void){ // 보통예금계좌 개설
-    char name[20];
+    String name;
     int acc;
     int bal;
     int rate;
@@ -58,7 +59,7 @@ void AccountHandler::MakeNormal(void){ // 보통예금계좌 개설
 }
 
 void AccountHandler::MakeCradit(void){ // 계좌 개설 함수
-    char name[20];
+    String name;
     int acc;
     int bal;
     int rate;

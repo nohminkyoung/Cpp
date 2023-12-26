@@ -4,13 +4,14 @@
 #define __NORMAL_ACCOUNT_H__
 
 #include "Account.h"
+#include "StringClass.h"
 
 class NormalAccount : public Account{
     private :
         int interRate; //이자
     
     public :
-        NormalAccount(char * name, int acc, int bal, int rate):Account(name, acc, bal), interRate(rate){}
+        NormalAccount(String name, int acc, int bal, int rate):Account(name, acc, bal), interRate(rate){}
 
         virtual void Deposit(int money){ //virtual로 선언 -> 얘로 생성된 클래스는 어떤 포인터에 담겨도 이 함수가 호출
             Account::Deposit(money); // 입금
