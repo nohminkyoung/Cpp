@@ -4,6 +4,8 @@
 using namespace std;
 
 enum{Level_A=7,Level_B=4,Level_C=2};
+enum{NOMAL=1, CREDIT=2};
+
 
 class Account{
     private : 
@@ -107,9 +109,9 @@ class AccountHandler{
             cout<<"선택 : "<<endl;
             cin>>select;
 
-            if(select==1){
+            if(select==NOMAL){
                 MakeNomal();
-            }else if (select==2)
+            }else if (select==CREDIT)
             {
                 MakeCradit();
             }else{
@@ -295,4 +297,7 @@ int main(void){
 // 게좌를 보통예금계좌와 신용신뢰계좌로 나누기
 // 보통예금계좌 : 이율정보 등록 -> 입금 할 때 입금하는 돈의 이자가 추가로 입금
 // 신용신뢰계좌 : 보통예금계좌의 기본이율 + 신용정보 ABC에 따른 추가이율 7, 4, 2
-// 이자는 초기 금액에는 발생 x
+// 이자는 초기 금액에는 발생 
+
+//####  version7  ####
+// 클래스의 선언과 정의를 구분
