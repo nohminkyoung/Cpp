@@ -4,10 +4,11 @@
 #define __ACCOUNT_HANDLER_H__
 
 #include "Account.h"
+#include "AccountArray.h"
 
 class AccountHandler{
     private :
-        Account * AccArr[100]; // 원래 전역 변수로 선언했던것을 class내부에
+        BoundCheckAccountPtrArray AccArr; // 원래 전역 변수로 선언했던것을 class내부에
         int accID;
 
     public :
