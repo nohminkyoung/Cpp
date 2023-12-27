@@ -3,24 +3,58 @@
 #ifndef __ACCOUNT_ARRAY_H__
 #define __ACCOUNT_ARRAY_H__
 
-#include "Account.h"
-typedef Account * ACCOUNT_PTR;
-
-class BoundCheckAccountPtrArray{
+template<typename T>
+class BoundingCheckArray{
     private :
-        ACCOUNT_PTR * arr;
+        T * arr;
         int arrlen;
 
     public :
-        BoundCheckAccountPtrArray(int len=100);
-        ACCOUNT_PTR& operator[](int index);
-        ACCOUNT_PTR operator[](int index) const;
+        BoundingCheckArray(int len=100);
+        T& operator[](int index);
+        T operator[](int index) const;
         int GetArrLen() const;
-        ~BoundCheckAccountPtrArray();
+        ~BoundingCheckArray();
 
-        BoundCheckAccountPtrArray(const BoundCheckAccountPtrArray& arr){}; 
-        BoundCheckAccountPtrArray& operator=(const BoundCheckAccountPtrArray& arr){};
+        BoundingCheckArray(const BoundingCheckArray& arr){}; 
+        BoundingCheckArray& operator=(const BoundingCheckArray& arr){};
 
 };
+
+template<typename T>
+BoundingCheckArray<T>::BoundingCheckArray(int len=100):arrlen(len){
+    arr = new T[len];
+}
+
+template<typename T>
+T& BoundingCheckArray<T>::operator[](int index){
+    if(index<0 || index>=arrlen){
+        cout<<"올바르지않은 인덱스"<<endl;
+        exit(1);
+    }
+
+    return arr[index];
+}
+
+template<typename T>
+T BoundingCheckArray<T>::operator[](int index) const{
+    if(index<0 || index>=arrlen){
+        cout<<"올바르지않은 인덱스"<<endl;
+        exit(1);
+    }
+
+    return arr[index];
+}
+
+template<typename T>
+int BoundingCheckArray<T>::GetArrLen() const{
+    return arrlen;
+}
+
+template<typename T>
+BoundingCheckArray<T>::~BoundingCheckArray(){
+    delete []arr;
+}
+
 
 #endif

@@ -8,7 +8,7 @@
 
 class AccountHandler{
     private :
-        BoundCheckAccountPtrArray AccArr; // 원래 전역 변수로 선언했던것을 class내부에
+        BoundingCheckArray<Account*> AccArr; // 원래 전역 변수로 선언했던것을 class내부에
         int accID;
 
     public :
