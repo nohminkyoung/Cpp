@@ -2,6 +2,7 @@
 
 #include "BankingCommonDecl.h"
 #include "Account.h"
+#include "AccountException.h"
 
 Account::Account(String name, int acc, int bal) : Acc(acc), Bal(bal){
     // Name = new char[strlen(name)+1];
@@ -19,14 +20,22 @@ int Account::GetAcc() const{  // 계좌 호출 + const
     return Acc;
 }
 
-void Account::Deposit (int money){ // 입금 
+void Account::Deposit (int money){ // 입금
+
+    if(money<0){
+        throw MinusException(money); // 예외 던지기 추가
+    }
     Bal += money;
 }
 
 int Account::Withdraw(int money){ // 출금
     
     if(Bal<money){
-        return 0;
+        throw MinusException(money); // 예외 던지기 추가
+    }
+
+    if(Bal<money){
+        throw InsuffException(Bal, money); // 예외 던지기 추가
     }
 
     Bal -= money;

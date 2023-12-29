@@ -41,3 +41,11 @@ int main(void){
 
 //####  version9  ####
 //직접 구현한  String 클래스를 사용
+
+//####  version10  ####
+// BoundingCheckArray를 템플릿으로 구현
+
+//####  version11  ####
+//예외처리
+// 예금액보다 더 많은 돈 출금
+// 입출금 진행시 0보다 작은 값을 입력

@@ -104,17 +104,23 @@ void AccountHandler::DepositMoney(void){ // 입금함수
     cout<<"입금할 돈 : "<<endl;
     cin>>money;
 
-    for(int i=0; i<accID; i++){//전체 계좌를 하나씩 비교하며 같은 계좌 찾기
+    try{
+        for(int i=0; i<accID; i++){//전체 계좌를 하나씩 비교하며 같은 계좌 찾기
 
-        if(AccArr[i]->GetAcc() == acc){  /////////ArrAcc가 동적할당 된 Acc의 주소값을 담고있는 배열이기 때문(포인터배열)
-            AccArr[i]->Deposit(money);
-            cout<<"입금 완료"<<endl;
+            if(AccArr[i]->GetAcc() == acc){  /////////ArrAcc가 동적할당 된 Acc의 주소값을 담고있는 배열이기 때문(포인터배열)
+                AccArr[i]->Deposit(money);
+                cout<<"입금 완료"<<endl;
 
-            return; // 같은 계좌 만나서 입금 완료하면 여기서 끝내기
+                return; // 같은 계좌 만나서 입금 완료하면 여기서 끝내기
+            }
         }
-    }
 
-    cout<<"동일한 계좌가 없습니다."<<endl; //for문에서 같은 계좌를 못만낫기 때문에 입금 실패 
+        cout<<"동일한 계좌가 없습니다."<<endl; //for문에서 같은 계좌를 못만낫기 때문에 입금 실패 
+    }
+    catch (MinusException expn){
+        expn.ShowException();
+        cout<<"입금액 재입력"<<endl;
+    }
 }
 
 void AccountHandler::withdrowMoney(void){ //출금함수
@@ -127,18 +133,28 @@ void AccountHandler::withdrowMoney(void){ //출금함수
     cout<<"출금할 돈 : "<<endl;
     cin>>money;
 
-    for(int i=0; i<accID; i++){
-        if(AccArr[i]->GetAcc() == acc){
-            if(AccArr[i]->Withdraw(money)==0){ //잔액보다 출금액이 많으면 class의 함수가 0을 전달해줌
-                cout<<"잔액이 부족합니다."<<endl;
-                return; //잔액 부족하면 여기서 종료
-            }
-            cout<<"출금 완료"<<endl;
-            return; //출금 완료하면 여기서 종료
-        }
-    }
 
-    cout<<"동일한 계좌가 없습니다."<<endl; //for문에서 같은 계좌를 못만낫기 때문에 출금 실패 
+    try{
+        for(int i=0; i<accID; i++){
+            if(AccArr[i]->GetAcc() == acc){
+                if(AccArr[i]->Withdraw(money)==0){ //잔액보다 출금액이 많으면 class의 함수가 0을 전달해줌
+                    cout<<"잔액이 부족합니다."<<endl;
+                    return; //잔액 부족하면 여기서 종료
+                }
+                cout<<"출금 완료"<<endl;
+                return; //출금 완료하면 여기서 종료
+            }
+        }
+
+        cout<<"동일한 계좌가 없습니다."<<endl; //for문에서 같은 계좌를 못만낫기 때문에 출금 실패 
+    }
+    catch (MinusException expn){
+        expn.ShowException();
+        cout<<"출금액 재입력"<<endl;
+    }catch (InsuffException expn){
+        expn.ShowException();
+        cout<<"출금액 재입력"<<endl;
+    }
 }
 
 void AccountHandler::ShowAllAccount(void){ // 전체 계좌 조회
